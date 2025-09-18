@@ -147,7 +147,6 @@ export default function Home() {
                 <span
                   key={industry}
                   className="text-deep-charcoal font-medium px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base bg-white/80 backdrop-blur-sm rounded-full border border-slate-blue/20 shadow-soft hover:shadow-medium transition-all duration-300"
-                  style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   {industry}
                 </span>
@@ -180,7 +179,6 @@ export default function Home() {
                 hover
                 variant="warm"
                 className="text-center group"
-                style={{ animationDelay: `${index * 0.2}s` }}
               >
                 <div className="text-5xl mb-6 transition-transform duration-300 group-hover:scale-110">
                   {pillar.icon}
@@ -218,7 +216,6 @@ export default function Home() {
                 <Card
                   variant="glass"
                   className="h-full transition-all duration-500 group-hover:scale-105"
-                  style={{ animationDelay: `${index * 0.15}s` }}
                 >
                   <div className="text-center">
                     <div className="inline-flex items-center justify-center w-12 h-12 bg-slate-blue rounded-full text-white font-bold text-lg mb-4">

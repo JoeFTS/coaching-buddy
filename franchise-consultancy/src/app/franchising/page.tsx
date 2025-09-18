@@ -135,12 +135,11 @@ export default function FranchisingPage() {
               </div>
 
               <div className="grid md:grid-cols-2 gap-12">
-                {franchisorVsFranchisee.map((party, index) => (
+                {franchisorVsFranchisee.map((party) => (
                   <Card
                     key={party.role}
                     variant="glass"
                     className="h-full"
-                    style={{ animationDelay: `${index * 0.2}s` }}
                   >
                     <h3 className="text-2xl font-bold text-deep-charcoal mb-6">{party.role}</h3>
                     <ul className="space-y-4">

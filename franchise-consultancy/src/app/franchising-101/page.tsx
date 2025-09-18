@@ -92,7 +92,7 @@ export default function Franchising101Page() {
       answer: "No. Franchising works best for businesses with proven profitability, systemized operations, and scalable models. Service businesses, retail concepts, and food service often franchise successfully, while highly technical or relationship-dependent businesses may not be suitable."
     },
     {
-      question: "What's the difference between franchising and licensing?",
+      question: "What&apos;s the difference between franchising and licensing?",
       answer: "Franchising involves a comprehensive business relationship with ongoing support, training, and system compliance. Licensing typically grants use of intellectual property with minimal ongoing involvement. Franchising is more regulated and requires FDD disclosure."
     },
     {
@@ -171,12 +171,12 @@ export default function Franchising101Page() {
               </span>
             </h2>
             <p className="text-xl text-soft-gray max-w-3xl mx-auto">
-              We've organized the most frequently asked questions by topic to help you understand every aspect of franchising.
+              We&apos;ve organized the most frequently asked questions by topic to help you understand every aspect of franchising.
             </p>
           </div>
 
           <div className="space-y-16">
-            {commonQuestions.map((category, categoryIndex) => (
+            {commonQuestions.map((category) => (
               <div key={category.category} className="max-w-6xl mx-auto">
                 <div className="text-center mb-12">
                   <div className="text-6xl mb-4">{category.icon}</div>
@@ -189,7 +189,6 @@ export default function Franchising101Page() {
                       key={questionIndex}
                       variant="warm"
                       className="hover:shadow-xl transition-all duration-300"
-                      style={{ animationDelay: `${questionIndex * 0.1}s` }}
                     >
                       <h4 className="text-xl font-bold text-deep-charcoal mb-4">{item.question}</h4>
                       <p className="text-soft-gray leading-relaxed">{item.answer}</p>
@@ -260,7 +259,7 @@ export default function Franchising101Page() {
               <div className="text-4xl mb-4">🎯</div>
               <h3 className="text-xl font-semibold text-navy mb-3">Preparation is Critical</h3>
               <p className="text-slate">
-                Successful franchising requires thorough preparation, proven systems, and adequate capital. Don't rush the process.
+                Successful franchising requires thorough preparation, proven systems, and adequate capital. Don&apos;t rush the process.
               </p>
             </Card>
 

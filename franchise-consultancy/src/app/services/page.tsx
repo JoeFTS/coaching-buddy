@@ -1,6 +1,5 @@
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
-import Link from 'next/link';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -99,7 +98,6 @@ export default function ServicesPage() {
                 hover
                 variant="warm"
                 className="h-full flex flex-col group"
-                style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="flex-1">
                   <h2 className="text-2xl font-bold text-deep-charcoal mb-4">{service.title}</h2>
