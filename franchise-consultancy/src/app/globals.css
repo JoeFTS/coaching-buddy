@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FEFEFE;
+  --foreground: #131314;
+
+  /* Modern Color Scheme */
+  --slate-blue: #4A6FA5;
+  --slate-blue-light: #6B8DB8;
+  --warm-cream: #FFF8F3;
+  --warm-sand: #F7F3F0;
+  --deep-charcoal: #131314;
+  --warm-charcoal: #1F1F20;
+  --soft-gray: #6B7280;
+  --light-gray: #F9FAFB;
+  --warm-white: #FEFEFE;
+
+  /* Accent Colors */
+  --accent-primary: #4A6FA5;
+  --accent-secondary: #6B8DB8;
+  --accent-success: #059669;
+  --accent-warning: #D97706;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Modern Color System */
+  --color-slate-blue: var(--slate-blue);
+  --color-slate-blue-light: var(--slate-blue-light);
+  --color-warm-cream: var(--warm-cream);
+  --color-warm-sand: var(--warm-sand);
+  --color-deep-charcoal: var(--deep-charcoal);
+  --color-warm-charcoal: var(--warm-charcoal);
+  --color-soft-gray: var(--soft-gray);
+  --color-light-gray: var(--light-gray);
+  --color-warm-white: var(--warm-white);
+
+  /* Legacy mappings for warm-coral/warm-peach */
+  --color-warm-coral: var(--slate-blue);
+  --color-warm-peach: var(--slate-blue-light);
+
+  /* Accent System */
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-success: var(--accent-success);
+  --color-accent-warning: var(--accent-warning);
+
+  /* Typography */
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-semibold: 600;
+  --font-regular: 400;
+  --font-display: var(--font-inter), system-ui, sans-serif;
+
+  /* Modern Spacing & Layout */
+  --radius: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-sm: 0.5rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-large: 0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-weight: var(--font-regular);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Modern Gradient Backgrounds */
+.gradient-warm {
+  background: linear-gradient(135deg, var(--warm-cream) 0%, var(--warm-sand) 100%);
+}
+
+.gradient-coral {
+  background: var(--slate-blue);
+}
+
+.gradient-subtle {
+  background: linear-gradient(135deg, var(--warm-white) 0%, var(--light-gray) 100%);
+}
+
+/* Glass Morphism Effect */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Modern Animations */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Smooth Transitions */
+* {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus States */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2;
+}
