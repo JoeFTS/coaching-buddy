@@ -4,12 +4,12 @@ const nextConfig: NextConfig = {
   output: 'export',
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
-  distDir: 'dist',
+  distDir: 'out',
   images: {
     unoptimized: true
   },
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/FCWebsite/' : '',
-  basePath: process.env.NODE_ENV === 'production' ? '/FCWebsite' : '',
+  assetPrefix: process.env.VERCEL ? '' : (process.env.NODE_ENV === 'production' ? '/FCWebsite/' : ''),
+  basePath: process.env.VERCEL ? '' : (process.env.NODE_ENV === 'production' ? '/FCWebsite' : ''),
 };
 
 export default nextConfig;
