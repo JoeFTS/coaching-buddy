@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -18,6 +19,22 @@ const divisions = [
   { id: '8', name: 'Thorobred', ageMin: 17, ageMax: 23 },
 ]
 
+interface Drill {
+  id: string
+  title: string
+  description: string
+  skill_category: string
+  difficulty_level: string
+  duration_minutes: number
+}
+
+interface PracticeActivity {
+  name: string
+  duration: number
+  category: string
+  drills: Drill[]
+}
+
 export default function CreatePracticePlanPage() {
   const [title, setTitle] = useState('')
   const [divisionId, setDivisionId] = useState('')
@@ -25,30 +42,106 @@ export default function CreatePracticePlanPage() {
   const [practiceDate, setPracticeDate] = useState('')
   const [loading, setLoading] = useState(false)
   const [generatedPlan, setGeneratedPlan] = useState<any>(null)
+  const supabase = createClient()
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
 
-    // Simulate plan generation (we'll build the actual drill selection later)
-    setTimeout(() => {
+    try {
       const selectedDivision = divisions.find(d => d.id === divisionId)
+      const totalDuration = parseInt(durationMinutes)
+
+      // Fetch drills from database for each category
+      const { data: hittingDrills } = await supabase
+        .from('drills')
+        .select('*')
+        .eq('skill_category', 'Hitting')
+        .limit(2)
+
+      const { data: fieldingDrills } = await supabase
+        .from('drills')
+        .select('*')
+        .eq('skill_category', 'Fielding')
+        .limit(2)
+
+      const { data: baserunningDrills } = await supabase
+        .from('drills')
+        .select('*')
+        .eq('skill_category', 'Baserunning')
+        .limit(1)
+
+      const { data: pitchingDrills } = await supabase
+        .from('drills')
+        .select('*')
+        .eq('skill_category', 'Pitching')
+        .limit(1)
+
+      // Build practice plan with real drills
+      const activities: PracticeActivity[] = [
+        {
+          name: 'Warm-up & Stretching',
+          duration: Math.floor(totalDuration * 0.10),
+          category: 'Warm-up',
+          drills: []
+        },
+        {
+          name: 'Hitting',
+          duration: Math.floor(totalDuration * 0.25),
+          category: 'Hitting',
+          drills: hittingDrills || []
+        },
+        {
+          name: 'Fielding',
+          duration: Math.floor(totalDuration * 0.25),
+          category: 'Fielding',
+          drills: fieldingDrills || []
+        },
+        {
+          name: 'Baserunning',
+          duration: Math.floor(totalDuration * 0.15),
+          category: 'Baserunning',
+          drills: baserunningDrills || []
+        }
+      ]
+
+      // Add pitching for older divisions
+      if (selectedDivision && selectedDivision.ageMin >= 7) {
+        activities.push({
+          name: 'Pitching',
+          duration: Math.floor(totalDuration * 0.15),
+          category: 'Pitching',
+          drills: pitchingDrills || []
+        })
+      }
+
+      activities.push({
+        name: 'Scrimmage / Game Situations',
+        duration: Math.floor(totalDuration * 0.15),
+        category: 'Game Situations',
+        drills: []
+      })
+
+      activities.push({
+        name: 'Cool Down',
+        duration: 5,
+        category: 'Cool Down',
+        drills: []
+      })
+
       setGeneratedPlan({
         title: title || `${selectedDivision?.name} Practice Plan`,
         division: selectedDivision,
-        duration: parseInt(durationMinutes),
+        duration: totalDuration,
         date: practiceDate,
-        drills: [
-          { name: 'Warm-up & Stretching', duration: 10, category: 'Warm-up' },
-          { name: 'Throwing Mechanics', duration: 15, category: 'Fundamentals' },
-          { name: 'Batting Practice', duration: 20, category: 'Hitting' },
-          { name: 'Fielding Grounders', duration: 15, category: 'Defense' },
-          { name: 'Scrimmage', duration: 15, category: 'Game Situations' },
-          { name: 'Cool Down', duration: 5, category: 'Cool Down' },
-        ]
+        activities: activities
       })
+    } catch (error) {
+      console.error('Error generating plan:', error)
+      alert('Error generating practice plan. Please try again.')
+    } finally {
       setLoading(false)
-    }, 1000)
+    }
   }
 
   const handleExportPDF = () => {
@@ -201,16 +294,34 @@ export default function CreatePracticePlanPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    {generatedPlan.drills.map((drill: any, index: number) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <div>
-                          <div className="font-medium text-sm">{drill.name}</div>
-                          <div className="text-xs text-gray-600">{drill.category}</div>
+                  <div className="space-y-3">
+                    {generatedPlan.activities.map((activity: PracticeActivity, index: number) => (
+                      <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
+                        {/* Activity Header */}
+                        <div className="flex items-center justify-between p-3 bg-gray-50">
+                          <div>
+                            <div className="font-semibold text-sm">{activity.name}</div>
+                            <div className="text-xs text-gray-600">{activity.category}</div>
+                          </div>
+                          <div className="text-sm font-medium text-[#064789]">
+                            {activity.duration} min
+                          </div>
                         </div>
-                        <div className="text-sm font-medium text-[#064789]">
-                          {drill.duration} min
-                        </div>
+
+                        {/* Drills List */}
+                        {activity.drills.length > 0 && (
+                          <div className="bg-white p-3 space-y-2">
+                            {activity.drills.map((drill: Drill, drillIndex: number) => (
+                              <div key={drillIndex} className="pl-4 border-l-2 border-[#064789] py-1">
+                                <div className="text-sm font-medium text-gray-900">{drill.title}</div>
+                                <div className="text-xs text-gray-600 mt-0.5">{drill.description}</div>
+                                <div className="text-xs text-[#064789] mt-1">
+                                  {drill.difficulty_level} • {drill.duration_minutes} min suggested
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
