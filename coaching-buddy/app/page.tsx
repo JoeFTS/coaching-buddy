@@ -1,192 +1,125 @@
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#EBF2FA]">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-xl border-b border-gray-100 z-50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+      <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-sm border-b border-gray-200 z-50">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex items-center justify-between h-14">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-primary-blue"></div>
-              <span className="text-lg font-semibold">Coaching Buddy</span>
+              <div className="text-lg font-bold tracking-tight">Coaching Buddy</div>
             </div>
-            <div className="flex items-center gap-4">
-              <a href="/auth/login" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-                Log in
+            <div className="flex items-center gap-3">
+              <a href="/create" className="px-4 py-2 text-sm font-medium bg-[#064789] text-white rounded-lg hover:bg-[#427AA1] transition-colors">
+                Create Plan
               </a>
-              <a href="/auth/register" className="px-5 py-2.5 text-sm font-medium bg-primary-blue text-white rounded-full hover:bg-primary-slate transition-all hover:scale-105">
-                Sign up
+              <a href="/auth/login" className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">
+                Login
               </a>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6 lg:px-8 relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary-blue/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary-green/5 rounded-full blur-3xl"></div>
-
-        <div className="max-w-7xl mx-auto relative">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-cream rounded-full mb-8">
-              <span className="text-sm font-medium text-primary-blue">✨ Built for Pony Baseball Coaches</span>
-            </div>
-
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-none">
-              Practice planning
-              <span className="block bg-gradient-to-r from-primary-blue via-primary-slate to-primary-green bg-clip-text text-transparent">
-                made simple
-              </span>
+      {/* Main Content - Single Screen */}
+      <main className="pt-20 pb-12 px-6">
+        <div className="max-w-6xl mx-auto">
+          {/* Hero */}
+          <div className="text-center mb-12">
+            <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-4">
+              Practice Plans
             </h1>
-
-            <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
-              Create professional practice plans in minutes. Tailored for every Pony Baseball division with age-appropriate drills and expert guidance.
+            <p className="text-xl text-gray-700 max-w-2xl mx-auto mb-8">
+              Create professional baseball practice plans in minutes. Built for all 8 Pony Baseball divisions.
             </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a href="/auth/register" className="group relative px-8 py-4 bg-primary-blue text-white rounded-full font-semibold overflow-hidden hover:scale-105 transition-transform">
-                <span className="relative z-10 flex items-center gap-2">
-                  Get started free
-                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </span>
-              </a>
-              <a href="#features" className="px-8 py-4 bg-gray-50 text-gray-900 rounded-full font-semibold hover:bg-gray-100 transition-all">
-                See how it works
-              </a>
-            </div>
+            <a href="/create" className="inline-flex items-center gap-2 px-6 py-3 bg-[#064789] text-white rounded-lg font-medium hover:bg-[#427AA1] transition-colors">
+              Create Your First Plan
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
           </div>
-        </div>
-      </section>
 
-      {/* Visual showcase cards */}
-      <section className="py-16 px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Card 1 - Large featured */}
-            <div className="md:col-span-2 relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary-blue to-primary-slate p-12 text-white">
-              <div className="relative z-10 max-w-2xl">
-                <h3 className="text-3xl font-bold mb-4">500+ Age-Appropriate Drills</h3>
-                <p className="text-lg text-white/90 mb-6">From Shetland to Thorobred, every drill is carefully selected for each division's skill level and development goals.</p>
-                <div className="flex gap-3">
-                  <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium">Video tutorials</span>
-                  <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium">Step-by-step</span>
-                  <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium">Equipment lists</span>
+          {/* Feature Cards Grid */}
+          <div className="grid md:grid-cols-3 gap-4 mb-12">
+            {/* Main Feature */}
+            <div className="md:col-span-2 bg-white rounded-2xl p-8 border border-gray-200">
+              <div className="mb-6">
+                <div className="inline-block px-3 py-1 bg-[#EBF2FA] text-[#064789] text-sm font-medium rounded-full mb-4">
+                  No Login Required
                 </div>
+                <h2 className="text-3xl font-bold mb-3">Generate Plans Instantly</h2>
+                <p className="text-gray-600 text-lg leading-relaxed">
+                  Select your division, practice duration, and get a complete practice plan with age-appropriate drills. Export to PDF and take it to the field.
+                </p>
               </div>
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+              <div className="flex flex-wrap gap-2">
+                <span className="px-3 py-1 bg-[#EBF2FA] text-sm font-medium rounded-full">PDF Export</span>
+                <span className="px-3 py-1 bg-[#EBF2FA] text-sm font-medium rounded-full">500+ Drills</span>
+                <span className="px-3 py-1 bg-[#EBF2FA] text-sm font-medium rounded-full">Video Tutorials</span>
+              </div>
             </div>
 
-            {/* Card 2 */}
-            <div className="relative overflow-hidden rounded-3xl bg-primary-cream p-8 border border-gray-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-              <div className="text-5xl mb-4">⚡</div>
-              <h3 className="text-2xl font-bold mb-3">Lightning Fast</h3>
-              <p className="text-gray-600 leading-relaxed">Generate a complete practice plan in under 60 seconds. No more spending hours on planning.</p>
-            </div>
-
-            {/* Card 3 */}
-            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary-green to-primary-yellow p-8 text-white hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-              <div className="text-5xl mb-4">📱</div>
-              <h3 className="text-2xl font-bold mb-3">Works Everywhere</h3>
-              <p className="text-white/90 leading-relaxed">Access your plans from any device. Mobile-optimized for on-field use.</p>
+            {/* Side Card */}
+            <div className="bg-gradient-to-br from-[#679436] to-[#A5BE00] rounded-2xl p-8 text-white">
+              <h3 className="text-2xl font-bold mb-3">8 Divisions</h3>
+              <p className="text-white/90 mb-4">
+                From Shetland (5-6) to Thorobred (17-23). Every drill is tailored for each age group.
+              </p>
+              <div className="text-sm font-medium">Ages 5-23 covered</div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Divisions Grid */}
-      <section className="py-24 px-6 lg:px-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">All 8 Pony Baseball Divisions</h2>
-            <p className="text-xl text-gray-600">Comprehensive support from beginner to advanced</p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { name: "Shetland", age: "5-6", color: "from-primary-blue to-blue-600" },
-              { name: "Pinto", age: "7-8", color: "from-primary-slate to-blue-500" },
-              { name: "Mustang", age: "9-10", color: "from-primary-green to-green-600" },
-              { name: "Bronco", age: "11-12", color: "from-primary-yellow to-yellow-500" },
-              { name: "Pony", age: "13-14", color: "from-primary-blue to-primary-slate" },
-              { name: "Colt", age: "15-16", color: "from-primary-slate to-primary-green" },
-              { name: "Palomino", age: "17-18", color: "from-primary-green to-primary-yellow" },
-              { name: "Thorobred", age: "17-23", color: "from-primary-yellow to-primary-blue" },
-            ].map((division, i) => (
-              <div key={i} className="group relative overflow-hidden rounded-2xl aspect-[4/5] hover:scale-105 transition-all duration-300 cursor-pointer">
-                <div className={`absolute inset-0 bg-gradient-to-br ${division.color}`}></div>
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
-                <div className="relative h-full flex flex-col items-center justify-center text-white p-6 text-center">
-                  <div className="text-3xl font-bold mb-2">{division.name}</div>
-                  <div className="text-sm font-medium opacity-90">Ages {division.age}</div>
+          {/* Divisions Grid */}
+          <div className="mb-12">
+            <h3 className="text-2xl font-bold mb-4">Pony Baseball Divisions</h3>
+            <div className="grid grid-cols-4 md:grid-cols-8 gap-2">
+              {[
+                { name: "Shetland", age: "5-6" },
+                { name: "Pinto", age: "7-8" },
+                { name: "Mustang", age: "9-10" },
+                { name: "Bronco", age: "11-12" },
+                { name: "Pony", age: "13-14" },
+                { name: "Colt", age: "15-16" },
+                { name: "Palomino", age: "17-18" },
+                { name: "Thorobred", age: "17-23" },
+              ].map((division, i) => (
+                <div key={i} className="bg-white rounded-xl p-4 border border-gray-200 text-center hover:border-[#064789] transition-colors cursor-pointer">
+                  <div className="text-sm font-bold mb-1">{division.name}</div>
+                  <div className="text-xs text-gray-600">{division.age}</div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom Features */}
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="bg-white rounded-xl p-6 border border-gray-200">
+              <div className="text-3xl mb-3">⚡</div>
+              <h4 className="font-bold mb-2">Fast</h4>
+              <p className="text-sm text-gray-600">Generate plans in under 60 seconds</p>
+            </div>
+            <div className="bg-white rounded-xl p-6 border border-gray-200">
+              <div className="text-3xl mb-3">📱</div>
+              <h4 className="font-bold mb-2">Mobile Ready</h4>
+              <p className="text-sm text-gray-600">Works on any device, anywhere</p>
+            </div>
+            <div className="bg-white rounded-xl p-6 border border-gray-200">
+              <div className="text-3xl mb-3">👥</div>
+              <h4 className="font-bold mb-2">Community</h4>
+              <p className="text-sm text-gray-600">Login to share drills & save plans</p>
+            </div>
           </div>
         </div>
-      </section>
-
-      {/* Features Grid */}
-      <section id="features" className="py-24 px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { icon: "📋", title: "Smart Plans", desc: "AI-powered practice plans that adapt to your team's needs" },
-              { icon: "🎯", title: "Skill Tracking", desc: "Monitor player development with interactive skill checklists" },
-              { icon: "📊", title: "PDF Export", desc: "Print professional plans to bring to the field" },
-              { icon: "👥", title: "Community", desc: "Share tips and drills with coaches worldwide" },
-              { icon: "🎥", title: "Video Library", desc: "Watch tutorials for every drill in the database" },
-              { icon: "⚙️", title: "Customizable", desc: "Drag and drop to adjust your practice flow" },
-            ].map((feature, i) => (
-              <div key={i} className="group p-8 rounded-2xl bg-white border border-gray-200 hover:border-primary-blue hover:shadow-lg transition-all duration-300">
-                <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-24 px-6 lg:px-8 bg-gradient-to-br from-primary-blue via-primary-slate to-primary-green relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-30"></div>
-
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            Ready to transform your coaching?
-          </h2>
-          <p className="text-xl text-white/90 mb-10">
-            Join coaches who are creating better practices with Coaching Buddy
-          </p>
-          <a href="/auth/register" className="inline-flex items-center gap-2 px-10 py-5 bg-white text-primary-blue rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-2xl">
-            Get started for free
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-          <p className="text-white/70 text-sm mt-6">No credit card required • Free forever</p>
-        </div>
-      </section>
+      </main>
 
       {/* Footer */}
-      <footer className="py-12 px-6 lg:px-8 bg-gray-50 border-t border-gray-200">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-primary-blue"></div>
-              <span className="font-semibold">Coaching Buddy</span>
-            </div>
-            <div className="text-sm text-gray-600">
-              © 2025 Coaching Buddy. All rights reserved.
-            </div>
-            <div className="flex gap-6 text-sm text-gray-600">
-              <a href="#" className="hover:text-gray-900 transition-colors">Privacy</a>
-              <a href="#" className="hover:text-gray-900 transition-colors">Terms</a>
-              <a href="#" className="hover:text-gray-900 transition-colors">Contact</a>
-            </div>
+      <footer className="py-6 px-6 border-t border-gray-200 bg-white">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3 text-sm text-gray-600">
+          <div className="font-medium">© 2025 Coaching Buddy</div>
+          <div className="flex gap-4">
+            <a href="#" className="hover:text-gray-900 transition-colors">Privacy</a>
+            <a href="#" className="hover:text-gray-900 transition-colors">Terms</a>
+            <a href="#" className="hover:text-gray-900 transition-colors">Contact</a>
           </div>
         </div>
       </footer>
