@@ -319,7 +319,7 @@ null,
 null,
 'Pitching',
 'beginner',
-ARRAY[],
+ARRAY[]::TEXT[],
 1),
 
 ('One-Knee Throwing',
