@@ -257,136 +257,134 @@ export default function CreatePracticePlanPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#EBF2FA]">
+    <div className="min-h-screen bg-[#F5F1E8] font-mono">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-6 py-4">
+      <header className="bg-black border-b-4 border-black">
+        <div className="max-w-6xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
-            <a href="/" className="text-lg font-bold tracking-tight hover:text-[#064789] transition-colors">
+            <a href="/" className="text-sm font-bold text-[#FF6B35] hover:text-white uppercase tracking-wider">
               ← Coaching Buddy
             </a>
-            <a href="/auth/login" className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">
-              Login to save
+            <a href="/auth/login" className="text-xs font-bold text-white hover:text-[#FF6B35] uppercase">
+              Login
             </a>
           </div>
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-6 py-8">
-        <div className="mb-6">
-          <h1 className="text-4xl font-bold tracking-tight mb-2">
-            Create Practice Plan
+      <div className="max-w-6xl mx-auto px-4 py-6">
+        <div className="mb-6 border-4 border-black bg-white p-4">
+          <h1 className="text-2xl font-bold uppercase mb-1 tracking-tight">
+            Practice Plan Generator
           </h1>
-          <p className="text-gray-600">
-            Generate a professional practice plan in seconds. No login required.
+          <p className="text-xs uppercase tracking-wide">
+            Design age-appropriate baseball practice
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-6">
+        <div className="grid lg:grid-cols-2 gap-4">
           {/* Form */}
           <div>
-            <Card>
-              <CardHeader>
-                <CardTitle>Practice Details</CardTitle>
-                <CardDescription>
-                  Tell us about your practice session
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleGenerate} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="title">Practice Title (optional)</Label>
+            <div className="border-4 border-black bg-white">
+              <div className="bg-[#FF6B35] border-b-4 border-black p-3">
+                <h2 className="text-sm font-bold uppercase tracking-wide">Configuration</h2>
+              </div>
+              <div className="p-4">
+                <form onSubmit={handleGenerate} className="space-y-3">
+                  <div>
+                    <label className="block text-xs font-bold uppercase mb-1">Title</label>
                     <Input
                       id="title"
                       type="text"
-                      placeholder="e.g., Week 3 Practice - Hitting Focus"
+                      placeholder="Week 3 Practice"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
+                      className="border-2 border-black rounded-none font-mono text-sm focus:ring-0 focus:border-[#FF6B35]"
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="division">Division *</Label>
+                  <div>
+                    <label className="block text-xs font-bold uppercase mb-1">Division *</label>
                     <Select value={divisionId} onValueChange={setDivisionId} required>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select division" />
+                      <SelectTrigger className="border-2 border-black rounded-none font-mono text-sm h-10">
+                        <SelectValue placeholder="Select..." />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="border-2 border-black rounded-none">
                         {divisions.map((division) => (
-                          <SelectItem key={division.id} value={division.id}>
-                            {division.name} (Ages {division.ageMin}-{division.ageMax})
+                          <SelectItem key={division.id} value={division.id} className="font-mono text-sm">
+                            {division.name} ({division.ageMin}-{division.ageMax})
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="duration">Duration *</Label>
+                  <div>
+                    <label className="block text-xs font-bold uppercase mb-1">Duration *</label>
                     <Select value={durationMinutes} onValueChange={setDurationMinutes}>
-                      <SelectTrigger>
+                      <SelectTrigger className="border-2 border-black rounded-none font-mono text-sm h-10">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="30">30 minutes</SelectItem>
-                        <SelectItem value="45">45 minutes</SelectItem>
-                        <SelectItem value="60">60 minutes</SelectItem>
-                        <SelectItem value="75">75 minutes</SelectItem>
-                        <SelectItem value="90">90 minutes</SelectItem>
-                        <SelectItem value="120">120 minutes</SelectItem>
+                      <SelectContent className="border-2 border-black rounded-none">
+                        <SelectItem value="30" className="font-mono text-sm">30 min</SelectItem>
+                        <SelectItem value="45" className="font-mono text-sm">45 min</SelectItem>
+                        <SelectItem value="60" className="font-mono text-sm">60 min</SelectItem>
+                        <SelectItem value="75" className="font-mono text-sm">75 min</SelectItem>
+                        <SelectItem value="90" className="font-mono text-sm">90 min</SelectItem>
+                        <SelectItem value="120" className="font-mono text-sm">120 min</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="practiceFocus">Practice Focus *</Label>
+                  <div>
+                    <label className="block text-xs font-bold uppercase mb-1">Focus *</label>
                     <Select value={practiceFocus} onValueChange={setPracticeFocus}>
-                      <SelectTrigger>
+                      <SelectTrigger className="border-2 border-black rounded-none font-mono text-sm h-10">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="mixed">Mixed / Balanced Practice</SelectItem>
-                        <SelectItem value="hitting">Hitting Focus</SelectItem>
-                        <SelectItem value="fielding">Fielding Focus</SelectItem>
-                        <SelectItem value="pitching">Pitching Focus</SelectItem>
+                      <SelectContent className="border-2 border-black rounded-none">
+                        <SelectItem value="mixed" className="font-mono text-sm">Mixed</SelectItem>
+                        <SelectItem value="hitting" className="font-mono text-sm">Hitting</SelectItem>
+                        <SelectItem value="fielding" className="font-mono text-sm">Fielding</SelectItem>
+                        <SelectItem value="pitching" className="font-mono text-sm">Pitching</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="practicesPerWeek">Practices Per Week *</Label>
+                  <div>
+                    <label className="block text-xs font-bold uppercase mb-1">Per Week *</label>
                     <Select value={practicesPerWeek} onValueChange={setPracticesPerWeek}>
-                      <SelectTrigger>
+                      <SelectTrigger className="border-2 border-black rounded-none font-mono text-sm h-10">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1">1 time per week</SelectItem>
-                        <SelectItem value="2">2 times per week</SelectItem>
-                        <SelectItem value="3">3 times per week</SelectItem>
-                        <SelectItem value="4">4 times per week</SelectItem>
-                        <SelectItem value="5">5+ times per week</SelectItem>
+                      <SelectContent className="border-2 border-black rounded-none">
+                        <SelectItem value="1" className="font-mono text-sm">1x</SelectItem>
+                        <SelectItem value="2" className="font-mono text-sm">2x</SelectItem>
+                        <SelectItem value="3" className="font-mono text-sm">3x</SelectItem>
+                        <SelectItem value="4" className="font-mono text-sm">4x</SelectItem>
+                        <SelectItem value="5" className="font-mono text-sm">5x+</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <Button
                     type="submit"
-                    className="w-full bg-[#064789] hover:bg-[#427AA1]"
+                    className="w-full bg-black hover:bg-[#FF6B35] text-white font-bold uppercase text-sm py-3 border-2 border-black rounded-none transition-colors"
                     disabled={loading || !divisionId}
                   >
-                    {loading ? 'Generating...' : 'Generate Practice Plan'}
+                    {loading ? '...' : 'Generate'}
                   </Button>
                 </form>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
-            <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200">
-              <h3 className="font-medium mb-2 text-sm">Want to save your plans?</h3>
-              <p className="text-xs text-gray-600 mb-3">
-                Create a free account to save, edit, and organize your practice plans.
+            <div className="mt-3 border-2 border-black bg-[#FFE5D9] p-3">
+              <p className="text-xs font-bold uppercase mb-1">Save Plans?</p>
+              <p className="text-xs mb-2">
+                Create account to save & organize
               </p>
-              <a href="/auth/register" className="text-xs font-medium text-[#064789] hover:underline">
-                Sign up for free →
+              <a href="/auth/register" className="text-xs font-bold uppercase underline hover:text-[#FF6B35]">
+                Sign Up →
               </a>
             </div>
           </div>
@@ -394,103 +392,88 @@ export default function CreatePracticePlanPage() {
           {/* Generated Plan */}
           <div>
             {!generatedPlan ? (
-              <Card className="h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-white">
-                <CardContent className="text-center py-12">
-                  <div className="text-6xl mb-4">📋</div>
-                  <h3 className="text-xl font-bold mb-2">Your plan will appear here</h3>
-                  <p className="text-gray-600 text-sm">
-                    Fill out the form and click Generate to create your practice plan
+              <div className="border-4 border-black bg-white h-full flex items-center justify-center min-h-[500px]">
+                <div className="text-center p-8">
+                  <div className="text-6xl mb-3">⚾</div>
+                  <h3 className="text-sm font-bold uppercase mb-2">Waiting for input</h3>
+                  <p className="text-xs">
+                    Configure and generate
                   </p>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ) : (
-              <Card>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle>{generatedPlan.title}</CardTitle>
-                      <CardDescription>
-                        {generatedPlan.division.name} • {generatedPlan.duration} minutes •
-                        {generatedPlan.focus === 'mixed' ? ' Mixed/Balanced' :
-                         generatedPlan.focus === 'hitting' ? ' Hitting Focus' :
-                         generatedPlan.focus === 'fielding' ? ' Fielding Focus' :
-                         ' Pitching Focus'} •
-                        {generatedPlan.practicesPerWeek}x per week
-                      </CardDescription>
-                    </div>
+              <div className="border-4 border-black bg-white">
+                <div className="bg-black text-white p-3 border-b-4 border-black">
+                  <div className="text-sm font-bold uppercase">{generatedPlan.title}</div>
+                  <div className="text-xs mt-1 opacity-90">
+                    {generatedPlan.division.name} / {generatedPlan.duration}min /
+                    {generatedPlan.focus === 'mixed' ? ' Mixed' :
+                     generatedPlan.focus === 'hitting' ? ' Hitting' :
+                     generatedPlan.focus === 'fielding' ? ' Fielding' :
+                     ' Pitching'} /
+                    {generatedPlan.practicesPerWeek}x/week
                   </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    {generatedPlan.activities.map((activity: PracticeActivity, index: number) => (
-                      <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
-                        {/* Activity Header */}
-                        <div className="flex items-center justify-between p-3 bg-gray-50">
-                          <div>
-                            <div className="font-semibold text-sm">{activity.name}</div>
-                            <div className="text-xs text-gray-600">{activity.category}</div>
-                          </div>
-                          <div className="text-sm font-medium text-[#064789]">
-                            {activity.duration} min
-                          </div>
+                </div>
+                <div className="p-4 space-y-3">
+                  {generatedPlan.activities.map((activity: PracticeActivity, index: number) => (
+                    <div key={index} className="border-2 border-black">
+                      {/* Activity Header */}
+                      <div className="flex items-center justify-between p-2 bg-[#FFE5D9] border-b-2 border-black">
+                        <div className="text-xs font-bold uppercase">{activity.name}</div>
+                        <div className="text-xs font-bold">
+                          {activity.duration}min
                         </div>
+                      </div>
 
-                        {/* Drills List */}
-                        {activity.drills.length > 0 && (
-                          <div className="bg-white p-3 space-y-3">
-                            {activity.drills.map((drill: Drill, drillIndex: number) => (
-                              <div key={drillIndex} className="pl-4 border-l-2 border-[#064789] py-2">
-                                <div className="text-sm font-bold text-gray-900">{drill.title}</div>
-                                <div className="text-xs text-gray-600 mt-1 italic">{drill.description}</div>
+                      {/* Drills List */}
+                      {activity.drills.length > 0 && (
+                        <div className="bg-white p-3 space-y-3">
+                          {activity.drills.map((drill: Drill, drillIndex: number) => (
+                            <div key={drillIndex} className="border-l-4 border-[#FF6B35] pl-3">
+                              <div className="text-xs font-bold uppercase mb-1">{drill.title}</div>
+                              <div className="text-xs mb-2">{drill.description}</div>
 
-                                {/* Instructions */}
-                                <div className="mt-2">
-                                  <div className="text-xs font-semibold text-gray-700 mb-1">How to do it:</div>
-                                  <div className="text-xs text-gray-700 whitespace-pre-line leading-relaxed">
-                                    {drill.instructions}
-                                  </div>
-                                </div>
-
-                                {/* Equipment */}
-                                {drill.equipment_needed && drill.equipment_needed.length > 0 && (
-                                  <div className="mt-2">
-                                    <span className="text-xs font-semibold text-gray-700">Equipment: </span>
-                                    <span className="text-xs text-gray-600">{drill.equipment_needed.join(', ')}</span>
-                                  </div>
-                                )}
-
-                                <div className="text-xs text-[#064789] mt-2 font-medium">
-                                  {drill.difficulty_level} • {drill.duration_minutes} min suggested
+                              {/* Instructions */}
+                              <div className="mb-2">
+                                <div className="text-xs font-bold mb-1">STEPS:</div>
+                                <div className="text-xs whitespace-pre-line leading-relaxed">
+                                  {drill.instructions}
                                 </div>
                               </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
 
-                  <div className="pt-4 border-t space-y-2">
+                              {/* Equipment */}
+                              {drill.equipment_needed && drill.equipment_needed.length > 0 && (
+                                <div className="mb-2">
+                                  <span className="text-xs font-bold">GEAR: </span>
+                                  <span className="text-xs">{drill.equipment_needed.join(', ')}</span>
+                                </div>
+                              )}
+
+                              <div className="text-xs font-bold uppercase">
+                                {drill.difficulty_level} / {drill.duration_minutes}min
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  <div className="border-t-2 border-black pt-3 mt-3 space-y-2">
                     <Button
                       onClick={handleExportPDF}
-                      className="w-full bg-[#064789] hover:bg-[#427AA1]"
+                      className="w-full bg-[#FF6B35] hover:bg-black text-white font-bold uppercase text-xs py-3 border-2 border-black rounded-none"
                     >
-                      📥 Export as PDF
+                      Export PDF
                     </Button>
                     <Button
                       onClick={handleSaveAndLogin}
-                      variant="outline"
-                      className="w-full"
+                      className="w-full bg-white hover:bg-black hover:text-white text-black font-bold uppercase text-xs py-3 border-2 border-black rounded-none"
                     >
-                      💾 Save to Account
+                      Save to Account
                     </Button>
                   </div>
-
-                  <div className="text-xs text-gray-500 text-center pt-2">
-                    Login to save and manage your practice plans
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             )}
           </div>
         </div>
