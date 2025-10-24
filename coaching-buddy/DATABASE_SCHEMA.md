@@ -1,6 +1,6 @@
 # Coaching Buddy Database Schema
 
-This document outlines the complete database schema for Coaching Buddy. Execute these SQL commands in your Supabase SQL editor.
+This document outlines the complete database schema for Coaching Buddy. This schema focuses on personal practice plan creation and management.
 
 ## Tables
 
@@ -168,68 +168,7 @@ CREATE POLICY "Users can manage their own plan drills" ON practice_plan_drills
   );
 ```
 
-### 6. feed_posts
-Social feed posts.
-
-```sql
-CREATE TABLE feed_posts (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID REFERENCES public.users(id) NOT NULL,
-  content TEXT NOT NULL,
-  drill_id UUID REFERENCES drills(id), -- optional reference to a drill
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()) NOT NULL,
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()) NOT NULL
-);
-
--- Enable RLS
-ALTER TABLE feed_posts ENABLE ROW LEVEL SECURITY;
-
--- Anyone can view posts
-CREATE POLICY "Anyone can view posts" ON feed_posts
-  FOR SELECT USING (true);
-
--- Authenticated users can create posts
-CREATE POLICY "Authenticated users can create posts" ON feed_posts
-  FOR INSERT WITH CHECK (auth.uid() = user_id);
-
--- Users can update their own posts
-CREATE POLICY "Users can update their own posts" ON feed_posts
-  FOR UPDATE USING (auth.uid() = user_id);
-
--- Users can delete their own posts
-CREATE POLICY "Users can delete their own posts" ON feed_posts
-  FOR DELETE USING (auth.uid() = user_id);
-```
-
-### 7. post_likes
-Like tracking for feed posts.
-
-```sql
-CREATE TABLE post_likes (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  post_id UUID REFERENCES feed_posts(id) ON DELETE CASCADE NOT NULL,
-  user_id UUID REFERENCES public.users(id) NOT NULL,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()) NOT NULL,
-  UNIQUE(post_id, user_id)
-);
-
--- Enable RLS
-ALTER TABLE post_likes ENABLE ROW LEVEL SECURITY;
-
--- Anyone can view likes
-CREATE POLICY "Anyone can view likes" ON post_likes
-  FOR SELECT USING (true);
-
--- Authenticated users can like posts
-CREATE POLICY "Authenticated users can like posts" ON post_likes
-  FOR INSERT WITH CHECK (auth.uid() = user_id);
-
--- Users can unlike posts
-CREATE POLICY "Users can unlike posts" ON post_likes
-  FOR DELETE USING (auth.uid() = user_id);
-```
-
-### 8. drill_favorites
+### 6. drill_favorites
 Favorite drills for quick access.
 
 ```sql
@@ -255,7 +194,7 @@ CREATE POLICY "Users can delete their own favorites" ON drill_favorites
   FOR DELETE USING (auth.uid() = user_id);
 ```
 
-### 9. division_skills
+### 7. division_skills
 Skill checklists by division.
 
 ```sql
@@ -277,7 +216,7 @@ CREATE POLICY "Anyone can view division skills" ON division_skills
   FOR SELECT USING (true);
 ```
 
-### 10. resources
+### 8. resources
 Links to official Pony Baseball resources.
 
 ```sql
@@ -310,9 +249,6 @@ CREATE INDEX idx_drills_category ON drills(skill_category);
 CREATE INDEX idx_practice_plans_user ON practice_plans(user_id);
 CREATE INDEX idx_practice_plans_division ON practice_plans(division_id);
 CREATE INDEX idx_practice_plan_drills_plan ON practice_plan_drills(practice_plan_id);
-CREATE INDEX idx_feed_posts_user ON feed_posts(user_id);
-CREATE INDEX idx_feed_posts_created ON feed_posts(created_at DESC);
-CREATE INDEX idx_post_likes_post ON post_likes(post_id);
 CREATE INDEX idx_drill_favorites_user ON drill_favorites(user_id);
 CREATE INDEX idx_division_skills_division ON division_skills(division_id);
 CREATE INDEX idx_resources_division ON resources(division_id);
@@ -338,9 +274,6 @@ CREATE TRIGGER update_drills_updated_at BEFORE UPDATE ON drills
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_practice_plans_updated_at BEFORE UPDATE ON practice_plans
-  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-
-CREATE TRIGGER update_feed_posts_updated_at BEFORE UPDATE ON feed_posts
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 ```
 

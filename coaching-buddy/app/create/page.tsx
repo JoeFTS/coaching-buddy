@@ -232,7 +232,7 @@ export default function CreatePracticePlanPage() {
                   </div>
 
                   <div className="text-xs text-gray-500 text-center pt-2">
-                    Login to customize drills, add notes, and save your plans
+                    Login to save and manage your practice plans
                   </div>
                 </CardContent>
               </Card>

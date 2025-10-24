@@ -100,13 +100,13 @@ export default async function DashboardPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>See what's happening in the community</CardDescription>
+            <CardTitle>Your Practice Plans</CardTitle>
+            <CardDescription>View and manage your saved plans</CardDescription>
           </CardHeader>
           <CardContent>
-            <Link href="/dashboard/community">
+            <Link href="/dashboard/plans">
               <Button className="w-full" variant="outline">
-                View Community Feed
+                View All Plans
               </Button>
             </Link>
           </CardContent>

@@ -104,9 +104,9 @@ export default function Home() {
               <p className="text-sm text-gray-600">Works on any device, anywhere</p>
             </div>
             <div className="bg-white rounded-xl p-6 border border-gray-200">
-              <div className="text-3xl mb-3">👥</div>
-              <h4 className="font-bold mb-2">Community</h4>
-              <p className="text-sm text-gray-600">Login to share drills & save plans</p>
+              <div className="text-3xl mb-3">💾</div>
+              <h4 className="font-bold mb-2">Save & Organize</h4>
+              <p className="text-sm text-gray-600">Login to save and manage your plans</p>
             </div>
           </div>
         </div>
