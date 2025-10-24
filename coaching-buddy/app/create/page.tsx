@@ -41,10 +41,23 @@ export default function CreatePracticePlanPage() {
   const [title, setTitle] = useState('')
   const [divisionId, setDivisionId] = useState('')
   const [durationMinutes, setDurationMinutes] = useState('60')
-  const [practiceDate, setPracticeDate] = useState('')
+  const [practicesPerWeek, setPracticesPerWeek] = useState('2')
+  const [practiceFocus, setPracticeFocus] = useState('mixed')
   const [loading, setLoading] = useState(false)
   const [generatedPlan, setGeneratedPlan] = useState<any>(null)
   const supabase = createClient()
+
+  const getDifficultyForDivision = (divisionId: string) => {
+    const div = divisions.find(d => d.id === divisionId)
+    if (!div) return ['beginner']
+
+    // Shetland/Pinto (5-8): beginner only
+    if (div.ageMin <= 8) return ['beginner']
+    // Mustang/Bronco (9-12): beginner + intermediate
+    if (div.ageMin <= 12) return ['beginner', 'intermediate']
+    // Pony+ (13+): all levels
+    return ['beginner', 'intermediate', 'advanced']
+  }
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -53,73 +66,159 @@ export default function CreatePracticePlanPage() {
     try {
       const selectedDivision = divisions.find(d => d.id === divisionId)
       const totalDuration = parseInt(durationMinutes)
+      const allowedDifficulties = getDifficultyForDivision(divisionId)
 
-      // Fetch drills from database for each category
-      const { data: hittingDrills } = await supabase
+      // Adjust drill counts based on focus
+      let hittingCount = 2, fieldingCount = 2, baserunningCount = 1, pitchingCount = 1
+
+      if (practiceFocus === 'hitting') {
+        hittingCount = 6
+        fieldingCount = 0
+        baserunningCount = 0
+        pitchingCount = 0
+      } else if (practiceFocus === 'fielding') {
+        hittingCount = 0
+        fieldingCount = 6
+        baserunningCount = 0
+        pitchingCount = 0
+      } else if (practiceFocus === 'pitching') {
+        hittingCount = 0
+        fieldingCount = 0
+        baserunningCount = 0
+        pitchingCount = 6
+      }
+
+      // Fetch drills from database for each category with appropriate difficulty
+      // Use a random seed based on timestamp to get different drills each time
+      const randomSeed = Math.random()
+
+      const { data: hittingDrills } = hittingCount > 0 ? await supabase
         .from('drills')
         .select('*')
         .eq('skill_category', 'Hitting')
-        .limit(2)
+        .in('difficulty_level', allowedDifficulties)
+        .limit(hittingCount * 2) // Fetch more than needed
+        : { data: [] }
 
-      const { data: fieldingDrills } = await supabase
+      const { data: fieldingDrills } = fieldingCount > 0 ? await supabase
         .from('drills')
         .select('*')
         .eq('skill_category', 'Fielding')
-        .limit(2)
+        .in('difficulty_level', allowedDifficulties)
+        .limit(fieldingCount * 2)
+        : { data: [] }
 
-      const { data: baserunningDrills } = await supabase
+      const { data: baserunningDrills } = baserunningCount > 0 ? await supabase
         .from('drills')
         .select('*')
         .eq('skill_category', 'Baserunning')
-        .limit(1)
+        .in('difficulty_level', allowedDifficulties)
+        .limit(baserunningCount * 2)
+        : { data: [] }
 
-      const { data: pitchingDrills } = await supabase
+      const { data: pitchingDrills } = pitchingCount > 0 ? await supabase
         .from('drills')
         .select('*')
         .eq('skill_category', 'Pitching')
-        .limit(1)
+        .in('difficulty_level', allowedDifficulties)
+        .limit(pitchingCount * 2)
+        : { data: [] }
 
-      // Build practice plan with real drills
+      // Shuffle and select the right number of drills
+      const shuffleArray = (array: any[]) => {
+        const shuffled = [...array]
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+        }
+        return shuffled
+      }
+
+      const selectedHittingDrills = hittingDrills ? shuffleArray(hittingDrills).slice(0, hittingCount) : []
+      const selectedFieldingDrills = fieldingDrills ? shuffleArray(fieldingDrills).slice(0, fieldingCount) : []
+      const selectedBaserunningDrills = baserunningDrills ? shuffleArray(baserunningDrills).slice(0, baserunningCount) : []
+      const selectedPitchingDrills = pitchingDrills ? shuffleArray(pitchingDrills).slice(0, pitchingCount) : []
+
+      // Build practice plan with real drills - adjust time based on focus
       const activities: PracticeActivity[] = [
         {
           name: 'Warm-up & Stretching',
           duration: Math.floor(totalDuration * 0.10),
           category: 'Warm-up',
           drills: []
-        },
-        {
-          name: 'Hitting',
-          duration: Math.floor(totalDuration * 0.25),
-          category: 'Hitting',
-          drills: hittingDrills || []
-        },
-        {
-          name: 'Fielding',
-          duration: Math.floor(totalDuration * 0.25),
-          category: 'Fielding',
-          drills: fieldingDrills || []
-        },
-        {
-          name: 'Baserunning',
-          duration: Math.floor(totalDuration * 0.15),
-          category: 'Baserunning',
-          drills: baserunningDrills || []
         }
       ]
 
-      // Add pitching for older divisions
-      if (selectedDivision && selectedDivision.ageMin >= 7) {
-        activities.push({
-          name: 'Pitching',
-          duration: Math.floor(totalDuration * 0.15),
-          category: 'Pitching',
-          drills: pitchingDrills || []
-        })
+      // Add activities based on focus
+      if (practiceFocus === 'hitting') {
+        // Hitting focus - ONLY hitting drills
+        if (selectedHittingDrills.length > 0) {
+          activities.push({
+            name: 'Hitting Drills',
+            duration: Math.floor(totalDuration * 0.80),
+            category: 'Hitting',
+            drills: selectedHittingDrills
+          })
+        }
+      } else if (practiceFocus === 'fielding') {
+        // Fielding focus - ONLY fielding drills
+        if (selectedFieldingDrills.length > 0) {
+          activities.push({
+            name: 'Fielding Drills',
+            duration: Math.floor(totalDuration * 0.80),
+            category: 'Fielding',
+            drills: selectedFieldingDrills
+          })
+        }
+      } else if (practiceFocus === 'pitching') {
+        // Pitching focus - ONLY pitching drills (if age appropriate)
+        if (selectedDivision && selectedDivision.ageMin >= 7 && selectedPitchingDrills.length > 0) {
+          activities.push({
+            name: 'Pitching Drills',
+            duration: Math.floor(totalDuration * 0.80),
+            category: 'Pitching',
+            drills: selectedPitchingDrills
+          })
+        }
+      } else {
+        // Mixed/Balanced - Mix of all drill types
+        if (selectedHittingDrills.length > 0) {
+          activities.push({
+            name: 'Hitting',
+            duration: Math.floor(totalDuration * 0.25),
+            category: 'Hitting',
+            drills: selectedHittingDrills
+          })
+        }
+        if (selectedFieldingDrills.length > 0) {
+          activities.push({
+            name: 'Fielding',
+            duration: Math.floor(totalDuration * 0.25),
+            category: 'Fielding',
+            drills: selectedFieldingDrills
+          })
+        }
+        if (selectedBaserunningDrills.length > 0) {
+          activities.push({
+            name: 'Baserunning',
+            duration: Math.floor(totalDuration * 0.15),
+            category: 'Baserunning',
+            drills: selectedBaserunningDrills
+          })
+        }
+        if (selectedDivision && selectedDivision.ageMin >= 7 && selectedPitchingDrills.length > 0) {
+          activities.push({
+            name: 'Pitching',
+            duration: Math.floor(totalDuration * 0.15),
+            category: 'Pitching',
+            drills: selectedPitchingDrills
+          })
+        }
       }
 
       activities.push({
         name: 'Scrimmage / Game Situations',
-        duration: Math.floor(totalDuration * 0.15),
+        duration: Math.floor(totalDuration * 0.10),
         category: 'Game Situations',
         drills: []
       })
@@ -135,7 +234,8 @@ export default function CreatePracticePlanPage() {
         title: title || `${selectedDivision?.name} Practice Plan`,
         division: selectedDivision,
         duration: totalDuration,
-        date: practiceDate,
+        focus: practiceFocus,
+        practicesPerWeek: practicesPerWeek,
         activities: activities
       })
     } catch (error) {
@@ -239,13 +339,34 @@ export default function CreatePracticePlanPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="date">Practice Date (optional)</Label>
-                    <Input
-                      id="date"
-                      type="date"
-                      value={practiceDate}
-                      onChange={(e) => setPracticeDate(e.target.value)}
-                    />
+                    <Label htmlFor="practiceFocus">Practice Focus *</Label>
+                    <Select value={practiceFocus} onValueChange={setPracticeFocus}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="mixed">Mixed / Balanced Practice</SelectItem>
+                        <SelectItem value="hitting">Hitting Focus</SelectItem>
+                        <SelectItem value="fielding">Fielding Focus</SelectItem>
+                        <SelectItem value="pitching">Pitching Focus</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="practicesPerWeek">Practices Per Week *</Label>
+                    <Select value={practicesPerWeek} onValueChange={setPracticesPerWeek}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1">1 time per week</SelectItem>
+                        <SelectItem value="2">2 times per week</SelectItem>
+                        <SelectItem value="3">3 times per week</SelectItem>
+                        <SelectItem value="4">4 times per week</SelectItem>
+                        <SelectItem value="5">5+ times per week</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <Button
@@ -289,8 +410,12 @@ export default function CreatePracticePlanPage() {
                     <div>
                       <CardTitle>{generatedPlan.title}</CardTitle>
                       <CardDescription>
-                        {generatedPlan.division.name} • {generatedPlan.duration} minutes
-                        {generatedPlan.date && ` • ${new Date(generatedPlan.date).toLocaleDateString()}`}
+                        {generatedPlan.division.name} • {generatedPlan.duration} minutes •
+                        {generatedPlan.focus === 'mixed' ? ' Mixed/Balanced' :
+                         generatedPlan.focus === 'hitting' ? ' Hitting Focus' :
+                         generatedPlan.focus === 'fielding' ? ' Fielding Focus' :
+                         ' Pitching Focus'} •
+                        {generatedPlan.practicesPerWeek}x per week
                       </CardDescription>
                     </div>
                   </div>
