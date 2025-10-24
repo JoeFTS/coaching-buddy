@@ -23,9 +23,11 @@ interface Drill {
   id: string
   title: string
   description: string
+  instructions: string
   skill_category: string
   difficulty_level: string
   duration_minutes: number
+  equipment_needed: string[]
 }
 
 interface PracticeActivity {
@@ -310,12 +312,29 @@ export default function CreatePracticePlanPage() {
 
                         {/* Drills List */}
                         {activity.drills.length > 0 && (
-                          <div className="bg-white p-3 space-y-2">
+                          <div className="bg-white p-3 space-y-3">
                             {activity.drills.map((drill: Drill, drillIndex: number) => (
-                              <div key={drillIndex} className="pl-4 border-l-2 border-[#064789] py-1">
-                                <div className="text-sm font-medium text-gray-900">{drill.title}</div>
-                                <div className="text-xs text-gray-600 mt-0.5">{drill.description}</div>
-                                <div className="text-xs text-[#064789] mt-1">
+                              <div key={drillIndex} className="pl-4 border-l-2 border-[#064789] py-2">
+                                <div className="text-sm font-bold text-gray-900">{drill.title}</div>
+                                <div className="text-xs text-gray-600 mt-1 italic">{drill.description}</div>
+
+                                {/* Instructions */}
+                                <div className="mt-2">
+                                  <div className="text-xs font-semibold text-gray-700 mb-1">How to do it:</div>
+                                  <div className="text-xs text-gray-700 whitespace-pre-line leading-relaxed">
+                                    {drill.instructions}
+                                  </div>
+                                </div>
+
+                                {/* Equipment */}
+                                {drill.equipment_needed && drill.equipment_needed.length > 0 && (
+                                  <div className="mt-2">
+                                    <span className="text-xs font-semibold text-gray-700">Equipment: </span>
+                                    <span className="text-xs text-gray-600">{drill.equipment_needed.join(', ')}</span>
+                                  </div>
+                                )}
+
+                                <div className="text-xs text-[#064789] mt-2 font-medium">
                                   {drill.difficulty_level} • {drill.duration_minutes} min suggested
                                 </div>
                               </div>
