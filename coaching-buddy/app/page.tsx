@@ -72,21 +72,26 @@ export default function Home() {
           {/* Divisions Grid */}
           <div className="mb-12">
             <h3 className="text-2xl font-bold mb-4">Pony Baseball Divisions</h3>
+            <p className="text-gray-600 mb-4">Click any division to view official rules and field specifications</p>
             <div className="grid grid-cols-4 md:grid-cols-8 gap-2">
               {[
-                { name: "Shetland", age: "5-6" },
-                { name: "Pinto", age: "7-8" },
-                { name: "Mustang", age: "9-10" },
-                { name: "Bronco", age: "11-12" },
-                { name: "Pony", age: "13-14" },
-                { name: "Colt", age: "15-16" },
-                { name: "Palomino", age: "17-18" },
-                { name: "Thorobred", age: "17-23" },
+                { name: "Shetland", age: "5-6", slug: "shetland" },
+                { name: "Pinto", age: "7-8", slug: "pinto" },
+                { name: "Mustang", age: "9-10", slug: "mustang" },
+                { name: "Bronco", age: "11-12", slug: "bronco" },
+                { name: "Pony", age: "13-14", slug: "pony" },
+                { name: "Colt", age: "15-16", slug: "colt" },
+                { name: "Palomino", age: "17-18", slug: "palomino" },
+                { name: "Thorobred", age: "17-23", slug: "thorobred" },
               ].map((division, i) => (
-                <div key={i} className="bg-white rounded-xl p-4 border border-gray-200 text-center hover:border-[#064789] transition-colors cursor-pointer">
-                  <div className="text-sm font-bold mb-1">{division.name}</div>
+                <a
+                  key={i}
+                  href={`/divisions/${division.slug}`}
+                  className="bg-white rounded-xl p-4 border border-gray-200 text-center hover:border-[#064789] hover:shadow-md transition-all cursor-pointer group"
+                >
+                  <div className="text-sm font-bold mb-1 group-hover:text-[#064789] transition-colors">{division.name}</div>
                   <div className="text-xs text-gray-600">{division.age}</div>
-                </div>
+                </a>
               ))}
             </div>
           </div>
