@@ -40,62 +40,73 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-white px-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">
-            Welcome Back
-          </CardTitle>
-          <CardDescription className="text-center">
-            Sign in to your Coaching Buddy account
-          </CardDescription>
-        </CardHeader>
-        <form onSubmit={handleLogin}>
-          <CardContent className="space-y-4">
-            {error && (
-              <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
-                {error}
+    <div className="min-h-screen flex items-center justify-center bg-[#F5F1E8] px-4 font-mono">
+      {/* Header */}
+      <nav className="fixed top-0 w-full bg-black border-b-4 border-black z-50">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex items-center justify-between h-12">
+            <Link href="/" className="text-sm font-bold text-[#FF6B35] uppercase tracking-wide">
+              ← Coaching Buddy
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      <div className="w-full max-w-md mt-12">
+        <div className="border-4 border-black bg-white">
+          <div className="bg-black text-white p-3 border-b-4 border-black">
+            <h1 className="text-sm font-bold uppercase text-center">Welcome Back</h1>
+            <p className="text-xs text-center mt-1 opacity-90">Sign in to your account</p>
+          </div>
+          <form onSubmit={handleLogin}>
+            <div className="p-6 space-y-4">
+              {error && (
+                <div className="p-3 text-xs bg-[#FFE5D9] border-2 border-black">
+                  <span className="font-bold uppercase">Error: </span>{error}
+                </div>
+              )}
+              <div>
+                <label className="block text-xs font-bold uppercase mb-1">Email</label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="coach@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="border-2 border-black rounded-none font-mono text-sm focus:ring-0 focus:border-[#FF6B35]"
+                />
               </div>
-            )}
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="coach@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <div>
+                <label className="block text-xs font-bold uppercase mb-1">Password</label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="border-2 border-black rounded-none font-mono text-sm focus:ring-0 focus:border-[#FF6B35]"
+                />
+              </div>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+            <div className="p-6 pt-0 space-y-3">
+              <Button
+                type="submit"
+                className="w-full bg-black hover:bg-[#FF6B35] text-white font-bold uppercase text-sm py-3 border-2 border-black rounded-none transition-colors"
+                disabled={loading}
+              >
+                {loading ? '...' : 'Sign In'}
+              </Button>
+              <p className="text-xs text-center">
+                <span className="opacity-75">Don't have an account? </span>
+                <Link href="/auth/register" className="font-bold uppercase underline hover:text-[#FF6B35]">
+                  Sign up
+                </Link>
+              </p>
             </div>
-          </CardContent>
-          <CardFooter className="flex flex-col space-y-4">
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={loading}
-            >
-              {loading ? 'Signing in...' : 'Sign In'}
-            </Button>
-            <p className="text-sm text-center text-gray-600">
-              Don't have an account?{' '}
-              <Link href="/auth/register" className="text-blue-600 hover:underline">
-                Sign up
-              </Link>
-            </p>
-          </CardFooter>
-        </form>
-      </Card>
+          </form>
+        </div>
+      </div>
     </div>
   )
 }
