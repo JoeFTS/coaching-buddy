@@ -19,6 +19,63 @@ const divisions = [
   { id: '8', name: 'Thorobred', ageMin: 17, ageMax: 23 },
 ]
 
+// Map division IDs to age-appropriate skills from SKILLS_MATRIX.md
+const divisionSkills: Record<string, {
+  hitting: string[]
+  baserunning: string[]
+  fielding: string[]
+  pitching: string[]
+}> = {
+  '1': { // Shetland (5-6)
+    hitting: ['proper-grip', 'basic-stance', 'watching-ball', 'contact-point', 'swing-through'],
+    baserunning: ['base-locations', 'running-direction', 'touching-bases', 'basic-stopping'],
+    fielding: ['two-hand-catch', 'get-in-front', 'basic-throw', 'alligator-catch'],
+    pitching: [] // Coach pitch only
+  },
+  '2': { // Pinto (7-8)
+    hitting: ['weight-transfer', 'hip-rotation', 'level-swing', 'tracking-ball', 'follow-through'],
+    baserunning: ['run-through-first', 'banana-turn', 'knowing-advance', 'sliding-intro'],
+    fielding: ['ready-position', 'footwork-basic', 'ground-balls', 'overhead-catch', 'accurate-throws'],
+    pitching: ['pitching-intro', 'balance-point', 'basic-windup', 'throwing-strikes']
+  },
+  '3': { // Mustang (9-10)
+    hitting: ['consistent-mechanics', 'pitch-recognition', 'situational-hitting', 'hands-inside', 'driving-ball'],
+    baserunning: ['leadoffs', 'reading-pitchers', 'stealing-basics', 'rounding-bases', 'sliding-technique'],
+    fielding: ['position-specific', 'double-play-footwork', 'drop-step', 'blocking-catcher', 'proper-throws-bases'],
+    pitching: ['release-point', 'pitch-control', 'basic-grips', 'fielding-position', 'arm-care']
+  },
+  '4': { // Bronco (11-12)
+    hitting: ['advanced-mechanics', 'plate-discipline', 'two-strike-approach', 'all-fields', 'bunting'],
+    baserunning: ['reading-flyballs', 'secondary-leads', 'first-to-third', 'steal-execution', 'pop-up-slide'],
+    fielding: ['position-mastery', 'cutoff-relay', 'communication', 'bunt-defense', 'advanced-double-plays', 'backing-up'],
+    pitching: ['multiple-pitches', 'pitch-sequencing', 'fielding-bunts', 'holding-runners', 'mental-game']
+  },
+  '5': { // Pony (13-14)
+    hitting: ['power-development', 'plate-coverage', 'mental-approach', 'spin-recognition', 'situational-execution'],
+    baserunning: ['aggressive-running', 'reading-situations', 'advanced-stealing', 'scoring-second'],
+    fielding: ['position-specialization', 'advanced-footwork', 'quick-release', 'decision-making', 'do-or-die'],
+    pitching: ['third-pitch', 'advanced-control', 'pitching-strategy', 'reading-hitters', 'complete-mental']
+  },
+  '6': { // Colt (15-16)
+    hitting: ['consistent-approach', 'bat-speed', 'mental-toughness', 'personalized-adjustments'],
+    baserunning: ['elite-baserunning-iq', 'maximizing-speed', 'advanced-reads', 'headfirst-slides'],
+    fielding: ['position-expertise', 'anticipation', 'quick-hands-feet', 'defensive-leadership'],
+    pitching: ['complete-arsenal', 'advanced-sequencing', 'competitive-mentality', 'recovery', 'velocity-development']
+  },
+  '7': { // Palomino (17-18)
+    hitting: ['elite-adjustments', 'advanced-pitch-recognition', 'clutch-performance'],
+    baserunning: ['elite-baserunning-iq', 'maximizing-speed', 'advanced-reads'],
+    fielding: ['position-expertise', 'anticipation', 'defensive-leadership'],
+    pitching: ['complete-arsenal', 'pitch-tunneling', 'professional-pitching']
+  },
+  '8': { // Thorobred (17-23)
+    hitting: ['elite-adjustments', 'advanced-pitch-recognition', 'clutch-performance'],
+    baserunning: ['elite-baserunning-iq', 'maximizing-speed', 'advanced-reads'],
+    fielding: ['position-expertise', 'anticipation', 'defensive-leadership'],
+    pitching: ['complete-arsenal', 'pitch-tunneling', 'professional-pitching', 'recovery']
+  }
+}
+
 interface Drill {
   id: string
   title: string
@@ -28,6 +85,7 @@ interface Drill {
   difficulty_level: string
   duration_minutes: number
   equipment_needed: string[]
+  skills_taught: string[]
 }
 
 interface PracticeActivity {
@@ -59,6 +117,22 @@ export default function CreatePracticePlanPage() {
     return ['beginner', 'intermediate', 'advanced']
   }
 
+  const getSkillsForDivision = (divisionId: string, category: string) => {
+    const skills = divisionSkills[divisionId]
+    if (!skills) return []
+
+    // Map category names to division skills keys
+    const categoryMap: Record<string, keyof typeof skills> = {
+      'Hitting': 'hitting',
+      'Baserunning': 'baserunning',
+      'Fielding': 'fielding',
+      'Pitching': 'pitching'
+    }
+
+    const skillKey = categoryMap[category]
+    return skillKey ? skills[skillKey] : []
+  }
+
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -88,15 +162,18 @@ export default function CreatePracticePlanPage() {
         pitchingCount = 6
       }
 
-      // Fetch drills from database for each category with appropriate difficulty
-      // Use a random seed based on timestamp to get different drills each time
-      const randomSeed = Math.random()
+      // Fetch drills from database for each category with appropriate difficulty and skills
+      const divisionHittingSkills = getSkillsForDivision(divisionId, 'Hitting')
+      const divisionBaserunningSkills = getSkillsForDivision(divisionId, 'Baserunning')
+      const divisionFieldingSkills = getSkillsForDivision(divisionId, 'Fielding')
+      const divisionPitchingSkills = getSkillsForDivision(divisionId, 'Pitching')
 
       const { data: hittingDrills } = hittingCount > 0 ? await supabase
         .from('drills')
         .select('*')
         .eq('skill_category', 'Hitting')
         .in('difficulty_level', allowedDifficulties)
+        .overlaps('skills_taught', divisionHittingSkills)
         .limit(hittingCount * 2) // Fetch more than needed
         : { data: [] }
 
@@ -105,6 +182,7 @@ export default function CreatePracticePlanPage() {
         .select('*')
         .eq('skill_category', 'Fielding')
         .in('difficulty_level', allowedDifficulties)
+        .overlaps('skills_taught', divisionFieldingSkills)
         .limit(fieldingCount * 2)
         : { data: [] }
 
@@ -113,14 +191,16 @@ export default function CreatePracticePlanPage() {
         .select('*')
         .eq('skill_category', 'Baserunning')
         .in('difficulty_level', allowedDifficulties)
+        .overlaps('skills_taught', divisionBaserunningSkills)
         .limit(baserunningCount * 2)
         : { data: [] }
 
-      const { data: pitchingDrills } = pitchingCount > 0 ? await supabase
+      const { data: pitchingDrills } = pitchingCount > 0 && divisionPitchingSkills.length > 0 ? await supabase
         .from('drills')
         .select('*')
         .eq('skill_category', 'Pitching')
         .in('difficulty_level', allowedDifficulties)
+        .overlaps('skills_taught', divisionPitchingSkills)
         .limit(pitchingCount * 2)
         : { data: [] }
 
