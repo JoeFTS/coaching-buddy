@@ -4,7 +4,17 @@ This file contains a comprehensive collection of baseball drills with real YouTu
 
 ## Overview
 
-The `drills_with_videos.sql` script adds **18 drills** across all major skill categories, each with:
+We provide **two drill libraries** with professional video instruction:
+
+### 1. Core Drill Library (`drills_with_videos.sql`)
+**18 drills** across all major skill categories from various reputable coaching sources.
+
+### 2. IMG Academy Drills (`img_academy_drills.sql`)
+**12 additional drills** from IMG Academy - USA Baseball's partner training facility with professional instructors.
+
+**Total: 30 drills with video instruction**
+
+Each drill includes:
 - Detailed step-by-step instructions
 - Real YouTube video demonstrations
 - Appropriate difficulty levels (beginner, intermediate, advanced)
@@ -44,6 +54,40 @@ The `drills_with_videos.sql` script adds **18 drills** across all major skill ca
 - **Four Seam Fastball Mechanics** - Foundation of all pitching
 - **Pitching Balance and Control** - Developing consistent delivery
 
+## IMG Academy Drill Library
+
+The `img_academy_drills.sql` file contains 12 additional drills from IMG Academy, a premier baseball training facility that works closely with USA Baseball.
+
+### IMG Academy Hitting Drills (3 drills)
+- **Walk Through Drill** - Creating momentum and separation
+- **Exaggerated Leg Kick** - Power development through the hips
+- **Launch Angle Drill** - Proper swing path for line drives
+
+### IMG Academy Infield Drills (3 drills)
+- **Three Cone Fundamentals** - Pre-pitch steps and fielding footwork
+- **Short Hop Attack** - Handling difficult short hops
+- **Dry Action Cone Drill** - Footwork practice without the ball
+
+### IMG Academy Pitching Drills (3 drills)
+- **Step Back Pivot Pick** - Footwork and balance in wind-up
+- **Janitor Throw** - Arm action and shoulder separation
+- **Step Back Throw** - Full pitching mechanics integration
+
+### IMG Academy Outfield Drills (3 drills)
+- **Outfield Footwork** - Approaching fly balls and ground balls
+- **Routine Ground Balls and Fly Balls** - Complete outfield training
+- **Overhead Ball and Assists** - Tracking and throwing from outfield
+
+## USA Baseball Resources
+
+For comprehensive information about USA Baseball's coaching resources, mobile app, and online drill library, see **USA_BASEBALL_RESOURCES.md**.
+
+USA Baseball offers:
+- **Mobile Coach App** - 175+ drills, practice planning, pitch tracking (FREE)
+- **USABDevelops.com** - 300+ drills online with detailed instructions
+- **Online Education Center** - Coaching courses and certification
+- **Video Library** - National team training and skill development videos
+
 ## How to Use
 
 ### For First-Time Setup
@@ -53,8 +97,16 @@ The `drills_with_videos.sql` script adds **18 drills** across all major skill ca
    - Click "SQL Editor" in the left sidebar
    - Click "New Query"
 
-2. **Run the Script**
+2. **Run the Scripts**
+
+   **First, run the core drill library:**
    - Open `drills_with_videos.sql` in your text editor
+   - Copy all the SQL code
+   - Paste into Supabase SQL Editor
+   - Click "Run" (or press Ctrl/Cmd + Enter)
+
+   **Then, run the IMG Academy drills:**
+   - Open `img_academy_drills.sql` in your text editor
    - Copy all the SQL code
    - Paste into Supabase SQL Editor
    - Click "Run" (or press Ctrl/Cmd + Enter)
@@ -234,10 +286,19 @@ If you find better instructional videos or want to contribute drills:
 
 ## Credits
 
-Drills compiled from various reputable baseball coaching sources. Video content belongs to respective creators and is linked for educational purposes only.
+Drills compiled from various reputable baseball coaching sources including:
+- Matt Antonelli (Antonelli Baseball)
+- IMG Academy
+- Baseball Tutorials
+- You Go Pro Baseball
+- USA Baseball affiliated content
+
+Video content belongs to respective creators and is linked for educational purposes only.
 
 ---
 
 **Last Updated:** October 2025
-**Total Drills:** 18
+**Total Drills:** 30 (18 core + 12 IMG Academy)
+**Video Sources:** YouTube instructional content from professional coaches
 **All Drills Include:** Instructions, Videos, Equipment Lists, Time Estimates
+**Bonus Resources:** USA Baseball Mobile Coach App info (175+ drills)
